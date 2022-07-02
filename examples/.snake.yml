@@ -1,0 +1,130 @@
+Project: Your_Project_Name
+Description: Your_Project_Description
+Version: 0.0.0
+Organization: Your_Project_Organization
+Contact: Your_Project_Organization <Your_Project_Email>
+Logo: Your_Project_Logo
+Repository: Your_Project_Repo
+Site: Your_Project_Site
+License: MIT
+
+Dependencies:
+  - package: termcolor/2.0.0
+    from: conan
+    imports:
+      - target: termcolor::termcolor
+        find: termcolor REQUIRED
+
+  - package: qtbase
+    from: system
+    imports:
+      - target: Qt6::Core
+        find: Qt6 REQUIRED COMPONENTS Core
+      - target: Qt6::Network
+        find: Qt6 REQUIRED COMPONENTS Network
+      - target: Qt6::Sql
+        find: Qt6 REQUIRED COMPONENTS Sql
+      - target: Qt6::Test
+        find: Qt6 REQUIRED COMPONENTS Test
+
+Scripts:
+  - name: echo
+    description: Example of a script.
+    commands:
+      - scripts/echo.sh
+
+  - name: echo-cmake
+    description: You can run CMake scripts.
+    commands:
+      - ${CMAKE_COMMAND} -E echo "Hi?"
+
+Profiles:
+  - id: default
+    description: Generic build profile
+    type: Debug
+    options:
+      - "SNAKE_ENABLE_TESTING": on
+        "SNAKE_ENABLE_TRANSLATIONS": on
+        "SNAKE_ENABLE_PACKAGING": on
+        "SNAKE_ENABLE_DEVELOPMENT_MODE": on
+        "SNAKE_ENABLE_VERBOSE": on
+        "BUILD_SHARED_LIBS": on
+        "CMAKE_INTERPROCEDURAL_OPTIMIZATION": off
+    flags.compile:
+      - -O0
+
+Definitions:
+  - if: CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "MinSizeRel"
+    defines:
+      - QT_NO_DEBUG
+      - QT_NO_DEBUG_OUTPUT
+
+  - defines:
+      - QT_NO_JAVA_STYLE_ITERATORS
+
+  - key: CMAKE_CXX_STANDARD
+    value: 23
+  - key: CMAKE_CXX_STANDARD_REQUIRED
+    value: on
+  - key: CMAKE_CXX_EXTENSIONS
+    value: off
+
+Targets:
+  - name: cc-lib
+    description: Example target.
+    type: shared-library
+    requirement: SNAKE_ALWAYS_BUILD
+    path: lib/cc-lib
+    features:
+      - libraries:
+          - type: public
+            targets:
+              - Qt6::Core
+
+  - name: example-one
+    description: Example target.
+    type: executable
+    requirement: SNAKE_ALWAYS_BUILD
+    path: examples/example-one
+    features:
+      - libraries:
+          - type: public
+            targets:
+              - Qt6::Core
+              - cc-lib
+
+  - name: qt-app
+    description: Example target.
+    type: executable
+    requirement: SNAKE_ALWAYS_BUILD
+    path: src/qt-app
+    features:
+      - libraries:
+          - type: public
+            targets:
+              - Qt6::Core
+              - cc-lib
+              - termcolor::termcolor
+
+      - resources:
+          - prefix: null
+            files:
+              - ${CMAKE_SOURCE_DIR}/res/data.txt
+
+  - name: test-qt-lib
+    description: Example target.
+    type: test
+    requirement: SNAKE_ALWAYS_BUILD
+    path: tests/test-qt-lib
+    features:
+      - libraries:
+          - type: public
+            targets:
+              - Qt6::Core
+              - Qt6::Test
+
+      - tests:
+          - name: some-generic-test-group
+            functions:
+              - example_test_1
+              - example_test_2

@@ -1,0 +1,5 @@
+{
+  "yaml.schemas": {
+    "build/snake.schema.json": ".snake.yml"
+  },
+}

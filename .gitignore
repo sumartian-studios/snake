@@ -1,0 +1,6 @@
+build/
+.cache/
+docs/*.svg
+docs/logo.banner.png
+distribution/
+docs/demo.cast
