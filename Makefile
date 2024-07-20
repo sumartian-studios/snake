@@ -12,7 +12,7 @@ build:
 	go build -ldflags="-s -w -X 'github.com/sumartian/snake/application.VersionStr=${PROJECT_VERSION}'"  -o ${OUTPUT_DIR}
 
 # Need to generate the data.zip...
-run:
+generate-schema:
 	go run tools/schema-generator/main.go
 
 # Need to pass data.zip manually via --archive...

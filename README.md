@@ -559,7 +559,7 @@ snake configure # Uses the last profile specified
 snake configure --update # Forces a dependency update
 
 # List profiles
-snake list --profiles
+snake profiles
 
 snake build # Build all targets
 snake build myapp myapp2 # Build specific targets
