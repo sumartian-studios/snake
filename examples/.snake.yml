@@ -96,7 +96,7 @@ Targets:
   - name: qt-app
     description: Example target.
     type: executable
-    requirement: SNAKE_ALWAYS_BUILD
+    requirement: BUILD_QT_APP
     path: src/qt-app
     features:
       - libraries:

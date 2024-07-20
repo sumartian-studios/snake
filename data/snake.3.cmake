@@ -13,19 +13,19 @@ endif()
 
 # Download/install dependencies...
 # -------------------------------------------------------------------------------------------------------
-if(SNAKE_FORCE_UPDATE)
-  message(STATUS "Snake installing dependencies...")
+# if(SNAKE_FORCE_UPDATE)
+#   message(STATUS "Snake installing dependencies...")
 
-  # conan_cmake_configure(REQUIRES ${ENABLED_CONAN_PACKAGES} GENERATORS "cmake_find_package")
-  # conan_cmake_autodetect(settings)
-  # conan_cmake_install(PATH_OR_REFERENCE
-  #                     "${CMAKE_BINARY_DIR}"
-  #                     BUILD
-  #                     "missing"
-  #                     REMOTE
-  #                     "conancenter"
-  #                     SETTINGS
-  #                     "${settings}"
-  #                     OUTPUT_QUIET
-  # )
-endif()
+#   conan_cmake_configure(REQUIRES ${ENABLED_CONAN_PACKAGES} GENERATORS "cmake_find_package")
+#   conan_cmake_autodetect(settings)
+#   conan_cmake_install(PATH_OR_REFERENCE
+#                       "${CMAKE_BINARY_DIR}"
+#                       BUILD
+#                       "missing"
+#                       REMOTE
+#                       "conancenter"
+#                       SETTINGS
+#                       "${settings}"
+#                       OUTPUT_QUIET
+#   )
+# endif()
