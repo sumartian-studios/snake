@@ -1,4 +1,5 @@
 build/
+examples/build
 .cache/
 docs/*.svg
 docs/logo.banner.png
