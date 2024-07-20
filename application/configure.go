@@ -17,13 +17,14 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/sumartian/snake/configuration"
+	"github.com/sumartian-studios/snake/configuration"
 )
 
 var forceUpdateFlag bool
 var profileFlag string
 var traceFlag bool
 
+// Returns the profile and if it has changed.
 func getOrUpdateCurrentProfile() (*configuration.Profile, bool, error) {
 	var currentProfile *configuration.Profile = nil
 	var currentProfileExists = false

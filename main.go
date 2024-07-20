@@ -10,7 +10,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/sumartian/snake/application"
+	"github.com/sumartian-studios/snake/application"
 )
 
 //go:embed distribution/data.zip

@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 
 	"github.com/spf13/cobra"
-	"github.com/sumartian/snake/configuration"
+	"github.com/sumartian-studios/snake/configuration"
 )
 
 func listProfiles() error {

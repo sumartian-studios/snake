@@ -11,9 +11,9 @@ import (
 	"strings"
 
 	"github.com/invopop/jsonschema"
-	"github.com/sumartian/snake/cmake"
-	"github.com/sumartian/snake/configuration"
-	"github.com/sumartian/snake/utilities"
+	"github.com/sumartian-studios/snake/cmake"
+	"github.com/sumartian-studios/snake/configuration"
+	"github.com/sumartian-studios/snake/utilities"
 )
 
 // Generate a JSON schema file from the configuration.
@@ -36,7 +36,7 @@ func generateSnakeSchema(src string, dest string) error {
 		return nil
 	}
 
-	if err := r.AddGoComments("github.com/sumartian/snake", src); err != nil {
+	if err := r.AddGoComments("github.com/sumartian-studios/snake", src); err != nil {
 		return err
 	}
 
@@ -99,7 +99,7 @@ func dump() error {
 			return err
 		}
 
-		if err = os.MkdirAll(filepath.Join(tmpDataDir, filepath.Dir(rel)), os.ModePerm); err != nil {
+		if err = os.MkdirAll(filepath.Join(tmpDataDir, filepath.Dir(rel)), 0777); err != nil {
 			return err
 		}
 
@@ -110,7 +110,7 @@ func dump() error {
 				return err
 			}
 
-			if err = os.WriteFile(filepath.Join(tmpDataDir, rel), data, 0644); err != nil {
+			if err = os.WriteFile(filepath.Join(tmpDataDir, rel), data, 0666); err != nil {
 				return err
 			}
 		} else {
@@ -130,7 +130,21 @@ func dump() error {
 		return err
 	}
 
-	if err = utilities.Compress(filepath.Join(root, "distribution", "data.zip"), filesToZip); err != nil {
+	zipFile := filepath.Join(root, "distribution", "data.zip")
+
+	fmt.Println("Delete old zip file:", zipFile)
+
+	if err = os.RemoveAll(zipFile); err != nil {
+		return err
+	}
+
+	if err = utilities.Compress(zipFile, filesToZip); err != nil {
+		return err
+	}
+
+	fmt.Println("Delete temporary directory:", tmpDataDir)
+
+	if err = os.RemoveAll(tmpDataDir); err != nil {
 		return err
 	}
 

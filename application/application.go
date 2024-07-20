@@ -17,7 +17,7 @@ import (
 
 	"github.com/fxamacker/cbor/v2"
 	"github.com/spf13/cobra"
-	"github.com/sumartian/snake/configuration"
+	"github.com/sumartian-studios/snake/configuration"
 	"gopkg.in/yaml.v3"
 )
 
@@ -80,20 +80,6 @@ type Application struct {
 // Global instance of our application.
 var app Application
 
-// Creates the build directory if it does not already exist.
-func (app *Application) createSnakeDir() error {
-	if _, err := os.Stat(app.snakeDir); os.IsNotExist(err) {
-		fmt.Println("Creating build directory")
-		os.Mkdir(app.snakeDir, os.ModeDir)
-	} else if os.IsExist(err) {
-		fmt.Println("Build directory found:", app.snakeDir)
-	} else {
-		return err
-	}
-
-	return nil
-}
-
 // Common initialization.
 func (app *Application) init() error {
 	var err error
@@ -128,14 +114,9 @@ func (app *Application) initSlow() error {
 		return fmt.Errorf("failed to load configuration: %w", err)
 	}
 
-	if err = app.createSnakeDir(); err != nil {
+	// Create the build directory if it does not exist.
+	if err = os.MkdirAll(app.snakeDir, os.ModePerm); err != nil {
 		return fmt.Errorf("failed to create build directory: %w", err)
-	}
-
-	if _, err := os.Stat(app.snakeDir); os.IsNotExist(err) {
-		if err = os.Mkdir(app.snakeDir, os.ModePerm); err != nil {
-			return err
-		}
 	}
 
 	if err := app.loadStorage(); err != nil {
@@ -240,7 +221,7 @@ func (app *Application) saveStorage() error {
 		return err
 	}
 
-	if err := ioutil.WriteFile(app.storagePath, b.Bytes(), 0644); err != nil {
+	if err := ioutil.WriteFile(app.storagePath, b.Bytes(), 0666); err != nil {
 		return err
 	}
 

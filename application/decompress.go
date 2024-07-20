@@ -10,7 +10,7 @@ import (
 	"bytes"
 	"fmt"
 
-	"github.com/sumartian/snake/utilities"
+	"github.com/sumartian-studios/snake/utilities"
 )
 
 // Decompress the embedded zip file.

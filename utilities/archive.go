@@ -101,7 +101,7 @@ func Decompress(reader *zip.Reader, dest string) error {
 		} else {
 			os.MkdirAll(filepath.Dir(path), os.ModePerm)
 
-			f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
+			f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, 0666)
 			if err != nil {
 				return err
 			}

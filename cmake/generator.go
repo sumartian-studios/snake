@@ -11,7 +11,7 @@ import (
 	"io/ioutil"
 	"strings"
 
-	"github.com/sumartian/snake/configuration"
+	"github.com/sumartian-studios/snake/configuration"
 )
 
 type PreDependency struct {

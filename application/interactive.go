@@ -10,7 +10,7 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/pflag"
-	"github.com/sumartian/snake/repl"
+	"github.com/sumartian-studios/snake/repl"
 )
 
 func (app *Application) resetFlags() {

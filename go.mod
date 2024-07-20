@@ -1,4 +1,4 @@
-module github.com/sumartian/snake
+module github.com/sumartian-studios/snake
 
 go 1.18
 

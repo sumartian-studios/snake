@@ -58,4 +58,4 @@ jobs:
           goos: ${{ matrix.goos }}
           release_tag: ${{ github.event.inputs.release-version-string }}
           goarch: ${{ matrix.goarch }}
-          ldflags: "-s -w -X 'github.com/sumartian/snake/application.VersionStr=${{ github.event.inputs.release-version-string }}'"
+          ldflags: "-s -w -X 'github.com/sumartian-studios/snake/application.VersionStr=${{ github.event.inputs.release-version-string }}'"

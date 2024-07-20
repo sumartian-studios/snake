@@ -99,7 +99,7 @@ Version: 0.0.0
 Organization: FancyCompany
 Contact: FancyCompany <fancy_company@noreply.gov>
 Logo: res/logos/logo.png
-Repository: https://github.com/sumartian/invictus
+Repository: https://github.com/sumartian-studios/invictus
 Site: https://sumartian.github.io/invictus
 License: MIT
 
@@ -131,7 +131,7 @@ Version: 1.3.0
 Organization: FancyCompany
 Contact: FancyCompany <fancy_company@noreply.gov>
 Logo: res/logos/logo.png
-Repository: https://github.com/sumartian/invictus
+Repository: https://github.com/sumartian-studios/invictus
 Site: https://sumartian.github.io/invictus
 License: MIT
 
@@ -394,7 +394,7 @@ imports:
 # You can then access the targets (ex. skylight::core or skylight::net)
 from: git
 package: skylight/master
-path: https://github.com/sumartian/skylight
+path: https://github.com/sumartian-studios/skylight
 imports:
   - target: skylight::core
     find: skylight REQUIRED COMPONENTS core
@@ -499,7 +499,7 @@ tests/
 You can download one of the prebuilt binaries from the releases. To build the project yourself:
 
 ```
-git clone https://github.com/sumartian/snake.git
+git clone https://github.com/sumartian-studios/snake.git
 cd snake && go build
 ```
 

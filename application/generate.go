@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/spf13/cobra"
-	"github.com/sumartian/snake/cmake"
+	"github.com/sumartian-studios/snake/cmake"
 )
 
 var generateCmd = &cobra.Command{
