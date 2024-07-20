@@ -1,3 +1,18 @@
 {
-  "cmakeFormat.args": []
+  "cmakeFormat.args": [],
+  "C_Cpp.default.compileCommands": "${workspaceFolder}/build/compile_commands.json",
+  "cmake.additionalCompilerSearchDirs": ["build"],
+  "files.associations": {
+    ".cmake-format": "yaml",
+    ".clang-tidy": "yaml",
+    ".clang-format": "yaml",
+    "DISCLOSURE": "plaintext",
+    ".packages": "properties",
+    ".prettierrc": "yaml",
+    "*.plist": "xml",
+    "*.in": "plaintext",
+    "*.cc": "cpp",
+    "LICENSE": "plaintext",
+    "qcoreapplication": "cpp"
+  }
 }

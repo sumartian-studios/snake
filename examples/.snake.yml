@@ -9,11 +9,11 @@ Site: Your_Project_Site
 License: MIT
 
 Dependencies:
-  - package: termcolor/2.0.0
-    from: conan
-    imports:
-      - target: termcolor::termcolor
-        find: termcolor REQUIRED
+  # - package: termcolor/2.0.0
+  #   from: conan
+  #   imports:
+  #     - target: termcolor::termcolor
+  #       find: termcolor REQUIRED
 
   - package: qtbase
     from: system

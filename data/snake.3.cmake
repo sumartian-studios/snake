@@ -18,7 +18,7 @@ if(SNAKE_FORCE_UPDATE)
 
   include("${SNAKE_DIR}/.cmake/Conan.cmake")
 
-  conan_cmake_configure(REQUIRES ${ENABLED_CONAN_PACKAGES} GENERATORS "CMakeDeps")
+  conan_cmake_configure(REQUIRES ${ENABLED_CONAN_PACKAGES} GENERATORS "CMakeDeps" "CMakeToolchain")
   conan_cmake_autodetect(settings)
   conan_cmake_install(PATH_OR_REFERENCE
                       "${CMAKE_BINARY_DIR}"
