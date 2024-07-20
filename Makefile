@@ -22,7 +22,7 @@ generate-schema:
 # ----------------------------------------------------------------------------
 configure-example:
 	make build
-	snake --verbose --root-dir=${EXAMPLE_DIR} configure
+	snake --root-dir=${EXAMPLE_DIR} configure
 
 clean-example:
 	snake --root-dir=${EXAMPLE_DIR} clean

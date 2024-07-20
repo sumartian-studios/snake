@@ -30,7 +30,9 @@ func Minify(path string) (data []byte, err error) {
 	multiline := false
 
 	for scanner.Scan() {
-		s := strings.TrimFunc(scanner.Text(), func(r rune) bool {
+		withoutLineComment, _, _ := strings.Cut(scanner.Text(), "#")
+
+		s := strings.TrimFunc(withoutLineComment, func(r rune) bool {
 			return unicode.IsSpace(r)
 		})
 
