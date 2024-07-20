@@ -608,20 +608,7 @@ Snake performs a couple of optimizations like more aggressive caching and strict
 
 ## Contributions
 
-You are welcome to contribute to Snake in the form of pull-requests, feature requests, or bug reports. To submit pull requests you should first have a proper Go development environment setup.
-
-Development options:
-
-```sh
-# Need to pass version string in ldflags...
-go build -ldflags="-s -w -X 'github.com/sumartian/snake/application.VersionStr=1.0.0'"
-
-# Need to generate the data.zip...
-go run tools/schema-generator/main.go
-
-# Need to pass data.zip manually via --archive...
-snake configure --profile default --archive ~/code/snake/distribution/data.zip --update
-```
+You are welcome to contribute to Snake in the form of pull-requests, feature requests, or bug reports. To submit pull requests you should first have a proper Go development environment setup. See the [Makefile](./Makefile) for build commands.
 
 ## License
 
