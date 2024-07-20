@@ -6,9 +6,19 @@
 package main
 
 import (
+	"embed"
+	"fmt"
+	"os"
+
 	"github.com/sumartian/snake/application"
 )
 
+//go:embed distribution/data.zip
+var dataZip embed.FS
+
 func main() {
-	application.Execute()
+	if err := application.Execute(&dataZip); err != nil {
+		fmt.Fprintf(os.Stderr, "error: %v\n", err)
+		os.Exit(1)
+	}
 }

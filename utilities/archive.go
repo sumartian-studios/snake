@@ -26,17 +26,7 @@ func Compress(filename string, files []string) error {
 	writer := zip.NewWriter(zipFile)
 	defer writer.Close()
 
-	for _, file := range files {
-		fmt.Println("compress:", file)
-
-		f, err := os.Open(file)
-
-		if err != nil {
-			return err
-		}
-
-		defer f.Close()
-
+	compressAndWriteFile := func(f *os.File) error {
 		info, err := f.Stat()
 
 		if err != nil {
@@ -49,7 +39,7 @@ func Compress(filename string, files []string) error {
 			return err
 		}
 
-		header.Name = file
+		header.Name = f.Name()
 		header.Method = zip.Deflate
 
 		writer, err := writer.CreateHeader(header)
@@ -58,7 +48,25 @@ func Compress(filename string, files []string) error {
 			return err
 		}
 
+		defer f.Close()
+
 		if _, err = io.Copy(writer, f); err != nil {
+			return err
+		}
+
+		return nil
+	}
+
+	for _, file := range files {
+		fmt.Println("compress:", file)
+
+		f, err := os.Open(file)
+
+		if err != nil {
+			return err
+		}
+
+		if err = compressAndWriteFile(f); err != nil {
 			return err
 		}
 	}
@@ -66,49 +74,51 @@ func Compress(filename string, files []string) error {
 	return nil
 }
 
-func Decompress(src string, dest string) error {
-	r, err := zip.OpenReader(src)
+func Decompress(reader *zip.Reader, dest string) error {
+	dest = filepath.Clean(dest) + string(os.PathSeparator)
 
-	if err != nil {
-		return err
-	}
+	// Make the destination directory if it does not exist.
+	os.MkdirAll(dest, os.ModePerm)
 
-	defer r.Close()
+	extractAndWriteFile := func(f *zip.File) error {
+		path := filepath.Join(dest, f.Name)
 
-	for _, f := range r.File {
-		p := filepath.Join(dest, f.Name)
-
-		if strings.Contains(p, "..") {
-			return fmt.Errorf("destination path should not contain '..': %s", p)
-		}
-
-		fmt.Println("write:", p)
-
-		if f.FileInfo().IsDir() {
-			os.MkdirAll(p, os.ModePerm)
-			continue
-		}
-
-		if err = os.MkdirAll(filepath.Dir(p), os.ModePerm); err != nil {
-			return err
-		}
-
-		out, err := os.OpenFile(p, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
-
-		if err != nil {
-			return err
+		// Check for ZipSlip: https://snyk.io/research/zip-slip-vulnerability
+		// See: https://stackoverflow.com/a/58192644
+		if !strings.HasPrefix(path, dest) {
+			return fmt.Errorf("%s: illegal file path", path)
 		}
 
 		rc, err := f.Open()
-
 		if err != nil {
 			return err
 		}
 
-		_, err = io.Copy(out, rc)
+		defer rc.Close()
 
-		out.Close()
-		rc.Close()
+		if f.FileInfo().IsDir() {
+			os.MkdirAll(path, os.ModePerm)
+		} else {
+			os.MkdirAll(filepath.Dir(path), os.ModePerm)
+
+			f, err := os.OpenFile(path, os.O_WRONLY|os.O_CREATE|os.O_TRUNC, f.Mode())
+			if err != nil {
+				return err
+			}
+
+			defer f.Close()
+
+			_, err = io.Copy(f, rc)
+			if err != nil {
+				return err
+			}
+		}
+
+		return nil
+	}
+
+	for _, f := range reader.File {
+		err := extractAndWriteFile(f)
 
 		if err != nil {
 			return err

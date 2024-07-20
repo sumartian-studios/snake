@@ -5,6 +5,7 @@
 
 PROJECT_VERSION = 1.0.0
 OUTPUT_DIR      = ~/.local/bin
+EXAMPLE_DIR     = ./examples
 
 # Need to pass version string in ldflags...
 build:
@@ -15,6 +16,11 @@ build:
 generate-schema:
 	go run tools/schema-generator/main.go
 
-# Need to pass data.zip manually via --archive...
-configure:
-	snake configure --profile default --archive ./distribution/data.zip --update
+# Examples tests...
+# ----------------------------------------------------------------------------
+configure-example:
+	make build
+	snake --root-dir=${EXAMPLE_DIR} configure
+
+clean-example:
+	snake --root-dir=${EXAMPLE_DIR} clean

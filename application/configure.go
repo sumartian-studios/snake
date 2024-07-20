@@ -22,7 +22,6 @@ import (
 
 var forceUpdateFlag bool
 var profileFlag string
-var snakeArchiveFlag string
 var traceFlag bool
 
 func getOrUpdateCurrentProfile() (*configuration.Profile, bool, error) {
@@ -145,11 +144,6 @@ var configureCmd = &cobra.Command{
 
 		var cmakeOptions []string
 
-		if len(snakeArchiveFlag) > 0 {
-			cmakeOptions = append(cmakeOptions, "-DSNAKE_CMAKE_FILES="+snakeArchiveFlag)
-			forceUpdateFlag = true
-		}
-
 		// Check if the configuration changed and if so regenerate.
 
 		currentProfile, profileChanged, err := getOrUpdateCurrentProfile()
@@ -186,6 +180,10 @@ var configureCmd = &cobra.Command{
 
 		if !app.db.Configured || forceUpdateFlag {
 			fmt.Println("Updating...")
+
+			if err = app.decompress(); err != nil {
+				return err
+			}
 
 			if !(app.db.Configured && profileChanged) {
 				if err = os.RemoveAll(filepath.Join(app.snakeDir, "snake.lock")); err != nil {
@@ -266,7 +264,4 @@ func init() {
 		"profile", "p", "",
 		"Select the build profile/preset")
 
-	configureCmd.PersistentFlags().StringVar(&snakeArchiveFlag,
-		"archive", "",
-		"The Snake archive to download/install")
 }

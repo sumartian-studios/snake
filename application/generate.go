@@ -11,8 +11,6 @@ import (
 	"strings"
 	"time"
 
-	_ "embed"
-
 	"github.com/spf13/cobra"
 	"github.com/sumartian/snake/cmake"
 )
@@ -64,23 +62,6 @@ var generateCmd = &cobra.Command{
 
 		g.Call("cmake_minimum_required", "VERSION", "3.23.1", "FATAL_ERROR")
 		g.Call("project", app.cfg.Project, "VERSION", app.cfg.Version, "LANGUAGES", "CXX")
-
-		local := cmake.Quote("${CMAKE_SOURCE_DIR}/snake.zip")
-
-		g.Call("if", "DEFINED", "SNAKE_CMAKE_FILES")
-		g.Call("configure_file", "${SNAKE_CMAKE_FILES}", local, "COPYONLY")
-		g.Call("file", "ARCHIVE_EXTRACT", "INPUT", local, "DESTINATION", "${SNAKE_DIR}")
-		g.Call("file", "REMOVE", local)
-		g.Call("else")
-		g.Call("if", "NOT", "EXISTS", cmake.Quote("${SNAKE_DIR}/snake.lock"))
-		g.Call("message", "STATUS", cmake.Quote("Downloading Snake..."))
-		g.Call("file", "DOWNLOAD",
-			fmt.Sprintf("\"https://github.com/sumartian/snake/releases/download/%s/data.zip\"", app.Version),
-			local, "TLS_VERIFY", "ON")
-		g.Call("file", "ARCHIVE_EXTRACT", "INPUT", local, "DESTINATION", "${SNAKE_DIR}")
-		g.Call("file", "REMOVE", local)
-		g.Call("endif")
-		g.Call("endif")
 
 		g.Call("set", "SNAKE_CONTACT", cmake.Quote(app.cfg.Contact))
 		g.Call("set", "SNAKE_ORGANIZATION", cmake.Quote(app.cfg.Organization))

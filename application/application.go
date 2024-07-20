@@ -7,6 +7,7 @@ package application
 
 import (
 	"bytes"
+	"embed"
 	"fmt"
 	"io/ioutil"
 	"os"
@@ -45,6 +46,9 @@ type Application struct {
 	// Snake build database.
 	db Storage
 
+	// The embedded CMake files.
+	dataZip *embed.FS
+
 	// Path to snake directory.
 	snakeDir string
 
@@ -80,7 +84,7 @@ var app Application
 func (app *Application) createSnakeDir() error {
 	if _, err := os.Stat(app.snakeDir); os.IsNotExist(err) {
 		fmt.Println("Creating build directory")
-		os.Mkdir(app.snakeDir, os.ModePerm)
+		os.Mkdir(app.snakeDir, os.ModeDir)
 	} else if os.IsExist(err) {
 		fmt.Println("Build directory found:", app.snakeDir)
 	} else {
@@ -246,8 +250,15 @@ func (app *Application) saveStorage() error {
 }
 
 // Start the application and parse command-line arguments.
-func Execute() {
+func Execute(dataZip *embed.FS) error {
+	if dataZip == nil {
+		return fmt.Errorf("corrupted Snake archive file")
+	}
+
+	app.dataZip = dataZip
 	app.Execute()
+
+	return nil
 }
 
 func init() {
