@@ -30,9 +30,7 @@ func Minify(path string) (data []byte, err error) {
 	multiline := false
 
 	for scanner.Scan() {
-		withoutLineComment, _, _ := strings.Cut(scanner.Text(), "#")
-
-		s := strings.TrimFunc(withoutLineComment, func(r rune) bool {
+		s := strings.TrimFunc(scanner.Text(), func(r rune) bool {
 			return unicode.IsSpace(r)
 		})
 
@@ -44,15 +42,18 @@ func Minify(path string) (data []byte, err error) {
 			continue
 		}
 
-		if lastLetter := s[len(s)-1]; lastLetter != ')' {
-			if multiline {
+		withoutLineComment, _, _ := strings.Cut(s, "#")
+
+		if lastLetter := withoutLineComment[len(withoutLineComment)-1]; lastLetter != ')' {
+			if multiline || lastLetter == '"' {
 				buffer.WriteString(" ")
 			}
-			buffer.WriteString(s)
+
+			buffer.WriteString(withoutLineComment)
 			multiline = true
 		} else {
 			multiline = false
-			buffer.WriteString(s)
+			buffer.WriteString(withoutLineComment)
 			buffer.WriteString("\n")
 		}
 	}
