@@ -43,13 +43,6 @@ func Minify(path string) (data []byte, err error) {
 			continue
 		}
 
-		// CMake can have line comments. Cut everything that is considered a comment.
-		withoutLineComment, _, _ := strings.Cut(s, "#")
-
-		s = strings.TrimFunc(withoutLineComment, func(r rune) bool {
-			return unicode.IsSpace(r)
-		})
-
 		if lastLetter := s[len(s)-1]; lastLetter != ')' {
 			multilineString := lastLetter == '"'
 

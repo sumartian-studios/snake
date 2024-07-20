@@ -11,6 +11,7 @@ import (
 	"strings"
 
 	"github.com/invopop/jsonschema"
+	"github.com/sumartian-studios/snake/cmake"
 	"github.com/sumartian-studios/snake/configuration"
 	"github.com/sumartian-studios/snake/utilities"
 )
@@ -109,7 +110,7 @@ func dump(versionStr string) error {
 		}
 
 		if ext := filepath.Ext(path); ext == ".cmake" {
-			data, err := ioutil.ReadFile(path)
+			data, err := cmake.Minify(path)
 
 			if err != nil {
 				return err
