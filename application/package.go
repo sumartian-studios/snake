@@ -1,4 +1,4 @@
-// Copyright (c) 2022 Sumartian Studios
+// Copyright (c) 2022-2024 Sumartian Studios
 //
 // Snake is free software: you can redistribute it and/or modify it under the
 // terms of the MIT license.
