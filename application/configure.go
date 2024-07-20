@@ -11,7 +11,6 @@ import (
 	"fmt"
 	"math"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
 	"text/tabwriter"
@@ -158,8 +157,6 @@ var configureCmd = &cobra.Command{
 			"-DSNAKE_DIR="+app.snakeDir,
 			"-B", app.db.ProfilePath, "-S", app.rootDir,
 			"-G", "Ninja",
-			"-DCMAKE_PROJECT_TOP_LEVEL_INCLUDES="+path.Join(app.snakeDir, ".cmake", "Conan.cmake"),
-			"-DCONANFILE="+path.Join(app.snakeDir, ".cmake", "conanfile.txt"),
 		)
 
 		if app.verbose {

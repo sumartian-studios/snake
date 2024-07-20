@@ -14,6 +14,7 @@ import (
 )
 
 // Reduces the size of a CMake file by removing whitespace and comments.
+// This is currently broken. Obviously can't handle every scenario.
 func Minify(path string) (data []byte, err error) {
 	file, err := os.Open(path)
 
