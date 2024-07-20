@@ -8,7 +8,6 @@ package application
 import (
 	"bufio"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"math"
 	"os"
@@ -28,37 +27,39 @@ var traceFlag bool
 
 func getOrUpdateCurrentProfile() (*configuration.Profile, bool, error) {
 	var currentProfile *configuration.Profile = nil
+	var currentProfileExists = false
 
-	if len(app.db.ProfilePath) > 0 && len(app.cfg.Profiles) > app.db.ProfileIndex {
-		currentProfile = &app.cfg.Profiles[app.db.ProfileIndex]
-		fmt.Println("Last profile:", currentProfile.Name)
+	if currentProfileExists, currentProfile = app.getCurrentProfile(); currentProfileExists {
+		fmt.Println("Reusing profile:", currentProfile.Name)
 	}
 
-	if len(profileFlag) > 0 {
-		for i, p := range app.cfg.Profiles {
-			if p.Name == profileFlag {
-				// Requested same profile; do nothing...
-				if currentProfile != nil && p.Name == currentProfile.Name {
-					return currentProfile, false, nil
-				}
+	if len(app.cfg.Profiles) < 1 {
+		return nil, false, fmt.Errorf("project does not have any profiles: %s", profileFlag)
+	}
 
-				app.db.ProfileIndex = i
-				app.db.ProfilePath = filepath.Join(app.snakeDir, p.Name)
-
-				app.storageChanged()
-
-				return &p, true, nil
+	// Look for a profile matching flag name.
+	for i, p := range app.cfg.Profiles {
+		if p.Name == profileFlag {
+			// Requested same profile; do nothing...
+			if currentProfile != nil && p.Name == currentProfile.Name {
+				return currentProfile, false, nil
 			}
+
+			currentProfile = &p
+			app.setCurrentProfile(i, currentProfile)
+
+			return currentProfile, true, nil
 		}
-
-		return nil, false, fmt.Errorf("unable to find profile: %s", profileFlag)
 	}
 
-	if currentProfile != nil {
-		return currentProfile, false, nil
+	// If no profile specified and no previous configuration use the first profile available.
+	if len(profileFlag) < 1 {
+		currentProfile = &app.cfg.Profiles[0]
+		app.setCurrentProfile(0, currentProfile)
+		return currentProfile, true, nil
 	}
 
-	return nil, false, errors.New("you must select a build profile (see 'snake list -p' and 'snake configure -p')")
+	return nil, false, fmt.Errorf("unable to find profile (see 'snake profiles'): %s", profileFlag)
 }
 
 func prettyPrintCMakeTraceResults() error {

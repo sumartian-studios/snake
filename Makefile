@@ -4,10 +4,12 @@
 # terms of the MIT license.
 
 PROJECT_VERSION = 1.0.0
+OUTPUT_DIR      = ~/.local/bin
 
 # Need to pass version string in ldflags...
 build:
-	go build -ldflags="-s -w -X 'github.com/sumartian/snake/application.VersionStr=${PROJECT_VERSION}'"
+	echo "Building..."
+	go build -ldflags="-s -w -X 'github.com/sumartian/snake/application.VersionStr=${PROJECT_VERSION}'"  -o ${OUTPUT_DIR}
 
 # Need to generate the data.zip...
 run:

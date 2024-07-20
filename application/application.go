@@ -268,5 +268,5 @@ func init() {
 	app.Command.PersistentFlags().BoolVar(&app.verbose, "verbose", false, "Enable verbose logging")
 
 	app.Command.AddCommand(deployCmd, buildCmd, testCmd, configureCmd, installCmd, cleanCmd,
-		packageCmd, runCmd, listCmd, docCmd, mutateCmd, formatCmd, generateCmd, newCmd)
+		packageCmd, runCmd, listProfilesCmd, listOptionsCmd, listTargetsCmd, docCmd, mutateCmd, formatCmd, generateCmd, newCmd)
 }
