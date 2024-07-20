@@ -15,7 +15,7 @@ import (
 
 // Decompress the embedded zip file.
 func (app *Application) decompress() error {
-	file, err := app.dataZip.ReadFile("distribution/data.zip")
+	file, err := app.dataZip.ReadFile("distribution/" + VersionStr + ".zip")
 
 	reader := bytes.NewReader(file)
 	zipReader, err := zip.NewReader(reader, int64(len(file)))

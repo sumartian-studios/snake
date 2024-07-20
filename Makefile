@@ -3,6 +3,8 @@
 # Snake is free software: you can redistribute it and/or modify it under the
 # terms of the MIT license.
 
+MAKEFLAGS += --always-make
+
 PROJECT_VERSION = 2.0.0
 OUTPUT_DIR      = ~/.local/bin
 EXAMPLE_DIR     = ./examples
@@ -14,13 +16,17 @@ build:
 
 # Need to generate the data.zip...
 generate-schema:
-	go run tools/schema-generator/main.go
+	go run tools/schema-generator/main.go ${PROJECT_VERSION}
 
 # Examples tests...
 # ----------------------------------------------------------------------------
 configure-example:
 	make build
-	snake --root-dir=${EXAMPLE_DIR} configure
+	snake --verbose --root-dir=${EXAMPLE_DIR} configure
 
 clean-example:
 	snake --root-dir=${EXAMPLE_DIR} clean
+
+clean:
+	rm -rf ./build
+	rm -rf ./distribution

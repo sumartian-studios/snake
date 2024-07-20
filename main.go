@@ -13,7 +13,7 @@ import (
 	"github.com/sumartian-studios/snake/application"
 )
 
-//go:embed distribution/data.zip
+//go:embed distribution/2.0.0.zip
 var dataZip embed.FS
 
 func main() {

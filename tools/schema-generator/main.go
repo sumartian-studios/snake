@@ -57,7 +57,7 @@ func generateSnakeSchema(src string, dest string) error {
 }
 
 // Dump Snake metadata into zip files for later embedding.
-func dump() error {
+func dump(versionStr string) error {
 	root, err := os.Getwd()
 
 	if err != nil {
@@ -66,7 +66,13 @@ func dump() error {
 
 	tmpDataDir := filepath.Join(root, "distribution", "snake")
 
-	err = os.MkdirAll(tmpDataDir, os.ModePerm)
+	fmt.Println("Delete old zip directory:")
+
+	if err = os.RemoveAll(filepath.Join(root, "distribution")); err != nil {
+		return err
+	}
+
+	err = os.MkdirAll(tmpDataDir, 0777)
 
 	if err != nil {
 		return err
@@ -110,7 +116,7 @@ func dump() error {
 				return err
 			}
 
-			if err = os.WriteFile(filepath.Join(tmpDataDir, rel), data, 0666); err != nil {
+			if err = os.WriteFile(filepath.Join(tmpDataDir, rel), data, 0664); err != nil {
 				return err
 			}
 		} else {
@@ -130,13 +136,7 @@ func dump() error {
 		return err
 	}
 
-	zipFile := filepath.Join(root, "distribution", "data.zip")
-
-	fmt.Println("Delete old zip file:", zipFile)
-
-	if err = os.RemoveAll(zipFile); err != nil {
-		return err
-	}
+	zipFile := filepath.Join(root, "distribution", versionStr+".zip")
 
 	if err = utilities.Compress(zipFile, filesToZip); err != nil {
 		return err
@@ -152,7 +152,11 @@ func dump() error {
 }
 
 func main() {
-	if err := dump(); err != nil {
+	if len(os.Args) < 2 {
+		fmt.Println("You need to specify a version number")
+	}
+
+	if err := dump(os.Args[1]); err != nil {
 		fmt.Println(err)
 	}
 }
