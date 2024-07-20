@@ -42,18 +42,32 @@ func Minify(path string) (data []byte, err error) {
 			continue
 		}
 
-		withoutLineComment, _, _ := strings.Cut(s, "#")
+		// CMake can have line comments. Cut everything that is considered a comment.
+		withoutLineComment, _, found := strings.Cut(s, "#")
 
-		if lastLetter := withoutLineComment[len(withoutLineComment)-1]; lastLetter != ')' {
-			if multiline || lastLetter == '"' {
+		if found {
+			s = strings.TrimFunc(withoutLineComment, func(r rune) bool {
+				return unicode.IsSpace(r)
+			})
+		}
+
+		if lastLetter := s[len(s)-1]; lastLetter != ')' {
+			multilineString := found || lastLetter == '"'
+
+			if multiline && !multilineString {
 				buffer.WriteString(" ")
 			}
 
-			buffer.WriteString(withoutLineComment)
+			buffer.WriteString(s)
+
+			// Add a space if there is a multiline string to avoid errors.
+			if multilineString {
+				buffer.WriteString(" ")
+			}
 			multiline = true
 		} else {
 			multiline = false
-			buffer.WriteString(withoutLineComment)
+			buffer.WriteString(s)
 			buffer.WriteString("\n")
 		}
 	}
