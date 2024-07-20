@@ -17,6 +17,7 @@ build:
 # Need to generate the data.zip...
 generate-schema:
 	go run tools/schema-generator/main.go ${PROJECT_VERSION}
+	snake --root-dir=${EXAMPLE_DIR} generate
 
 # Examples tests...
 # ----------------------------------------------------------------------------

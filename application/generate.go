@@ -60,7 +60,7 @@ var generateCmd = &cobra.Command{
 		g.Call("message", "STATUS", cmake.Quote("Slithering into... ${SNAKE_DIR}"))
 		g.Call("endif")
 
-		g.Call("cmake_minimum_required", "VERSION", "3.23.1", "FATAL_ERROR")
+		g.Call("cmake_minimum_required", "VERSION", "3.30.0", "FATAL_ERROR")
 		g.Call("project", app.cfg.Project, "VERSION", app.cfg.Version, "LANGUAGES", "CXX")
 
 		g.Call("set", "SNAKE_CONTACT", cmake.Quote(app.cfg.Contact))

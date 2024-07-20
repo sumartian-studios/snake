@@ -11,6 +11,7 @@ import (
 	"fmt"
 	"math"
 	"os"
+	"path"
 	"path/filepath"
 	"strings"
 	"text/tabwriter"
@@ -154,6 +155,7 @@ var configureCmd = &cobra.Command{
 		}
 
 		cmakeOptions = append(cmakeOptions,
+			"-DCMAKE_PROJECT_TOP_LEVEL_INCLUDES=", path.Join(app.snakeDir, ".cmake", "Conan.cmake"),
 			"-DSNAKE_DIR="+app.snakeDir,
 			"-B", app.db.ProfilePath, "-S", app.rootDir,
 			"-G", "Ninja",
