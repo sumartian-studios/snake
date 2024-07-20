@@ -67,8 +67,8 @@ var generateCmd = &cobra.Command{
 
 		local := cmake.Quote("${CMAKE_SOURCE_DIR}/snake.zip")
 
-		g.Call("if", "DEFINED", "SNAKE_ARCHIVE")
-		g.Call("configure_file", "${SNAKE_ARCHIVE}", local, "COPYONLY")
+		g.Call("if", "DEFINED", "SNAKE_CMAKE_FILES")
+		g.Call("configure_file", "${SNAKE_CMAKE_FILES}", local, "COPYONLY")
 		g.Call("file", "ARCHIVE_EXTRACT", "INPUT", local, "DESTINATION", "${SNAKE_DIR}")
 		g.Call("file", "REMOVE", local)
 		g.Call("else")

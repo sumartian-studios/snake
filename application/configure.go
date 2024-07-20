@@ -146,7 +146,7 @@ var configureCmd = &cobra.Command{
 		var cmakeOptions []string
 
 		if len(snakeArchiveFlag) > 0 {
-			cmakeOptions = append(cmakeOptions, "-DSNAKE_ARCHIVE="+snakeArchiveFlag)
+			cmakeOptions = append(cmakeOptions, "-DSNAKE_CMAKE_FILES="+snakeArchiveFlag)
 			forceUpdateFlag = true
 		}
 

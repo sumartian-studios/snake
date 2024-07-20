@@ -366,7 +366,7 @@ cd build-no-snake
 cmake -S . -B ./build -D CMAKE_BUILD_TYPE="Release" -D NO_SNAKE=on -D SNAKE_ENABLE_EXAMPLES=on -GNinja
 
 # You can also use a local archive.
-cmake -S . -B ./build -D CMAKE_BUILD_TYPE="Debug" -D NO_SNAKE=on -D SNAKE_ARCHIVE="distribution/data.zip" -GNinja
+cmake -S . -B ./build -D CMAKE_BUILD_TYPE="Debug" -D NO_SNAKE=on -D SNAKE_CMAKE_FILES="distribution/data.zip" -GNinja
 ```
 
 ### Dependency Providers
